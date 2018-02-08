@@ -13,7 +13,9 @@ nconf
     'OAUTH2_CLIENT_ID',
     'OAUTH2_CLIENT_SECRET',
     'OAUTH2_CALLBACK',
-    'PORT',
+    'PORT_DEV',
+    'PORT_PROD',
+    'PORT_PROD_PREVIEW',
     'SECRET'
   ])
   // 3. Config file

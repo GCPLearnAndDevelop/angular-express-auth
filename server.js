@@ -4,6 +4,7 @@ const session = require('express-session');
 // const MemcachedStore = require('connect-memcached')(session);
 const passport = require('passport');
 const config = require('./config');
+const ouath2 = require('./oauth2');
 
 const app = express();
 
@@ -35,7 +36,7 @@ app.use(express.static(path.join(__dirname, 'dist')));
 // OAuth2
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(require('./oauth2').router);
+app.use(ouath2.router);
 
 // Redirect root to /home
 app.get('/', (req, res) => {
@@ -45,11 +46,6 @@ app.get('/', (req, res) => {
 // Send all other requests to the Angular app
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'dist/index.html'));
-});
-
-// Basic 404 handler
-app.use((req, res) => {
-  res.status(404).send('Not Found');
 });
 
 // Basic error handler
