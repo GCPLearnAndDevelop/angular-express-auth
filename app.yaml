@@ -1,2 +1,8 @@
 runtime: nodejs
 env: flex
+env_variables:
+  OAUTH2_CLIENT_ID: "863388695260-ajin7qpj0f8q3t5rhtfmng4s1305p7g7.apps.googleusercontent.com"
+  OAUTH2_CLIENT_SECRET: "KJDrmh9LXR59VaYC0zjvRblt"
+  OAUTH2_CALLBACK: "https://blank-sheet-194623.appspot.com/oauth2callback"
+  CALLBACK: "/oauth2callback"
+  SECRET: "blank-sheet-secret"

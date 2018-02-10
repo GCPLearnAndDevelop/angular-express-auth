@@ -4,12 +4,16 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "buildDev": "ng build && nodemon server.js",
+    "serve": "ng serve",
     "build": "ng build --prod",
+    "bd": "ng build",
+    "start": "node server.js --environment=prod",
+    "sd": "nodemon server.js --environment=dev",
+    "bs": "npm run bd && npm run sd",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "deploy": "gcloud app deploy"
   },
   "private": true,
   "dependencies": {

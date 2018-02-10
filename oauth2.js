@@ -25,9 +25,9 @@ function extractProfile (profile) {
 // object, which will be set at `req.user` in route handlers after
 // authentication.
 passport.use(new GoogleStrategy({
-  clientID: config.get('OAUTH2_CLIENT_ID'),
-  clientSecret: config.get('OAUTH2_CLIENT_SECRET'),
-  callbackURL: config.get('OAUTH2_CALLBACK'),
+  clientID: process.env.OAUTH2_CLIENT_ID || config.get('OAUTH2_CLIENT_ID'),
+  clientSecret: process.env.OAUTH2_CLIENT_SECRET || config.get('OAUTH2_CLIENT_SECRET'),
+  callbackURL: process.env.OAUTH2_CALLBACK || config.get('OAUTH2_CALLBACK'),
   accessType: 'offline'
 }, (accessToken, refreshToken, profile, cb) => {
   // Extract the minimal profile information we need from the profile object
@@ -95,7 +95,7 @@ router.get(
 router.get(
   // OAuth 2 callback url. Use this url to configure your OAuth client in the
   // Google Developers console
-  '/oath2callback',
+  process.env.CALLBACK || '/oauth2callback',
 
   // Finish OAuth 2 flow using Passport.js
   passport.authenticate('google'),
