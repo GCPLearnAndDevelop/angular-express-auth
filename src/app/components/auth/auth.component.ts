@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { isDevMode } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../services/auth/auth.service';
 import { DOCUMENT } from '@angular/platform-browser';
 import * as config from '../../../../config.json';
 

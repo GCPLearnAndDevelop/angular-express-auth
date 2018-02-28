@@ -6,7 +6,8 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { RoutingModule } from './modules/routing/routing.module';
 import { HomeComponent } from './components/home/home.component';
-import { AuthService } from './services/auth.service';
+import { AuthService } from './services/auth/auth.service';
+import { UserService } from './services/user/user.service';
 import { AuthComponent } from './components/auth/auth.component';
 
 
@@ -21,7 +22,7 @@ import { AuthComponent } from './components/auth/auth.component';
     RoutingModule,
     HttpModule
   ],
-  providers: [AuthService],
+  providers: [AuthService, UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

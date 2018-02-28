@@ -1,6 +1,8 @@
 const express = require('express');
 const config = require('./config');
 
+const noop = () => {}
+
 // [START setup]
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
@@ -10,10 +12,12 @@ function extractProfile (profile) {
   if (profile.photos && profile.photos.length) {
     imageUrl = profile.photos[0].value;
   }
+
   return {
     id: profile.id,
     displayName: profile.displayName,
-    image: imageUrl
+    image: imageUrl,
+    email: profile.emails[0].value
   };
 }
 
@@ -103,6 +107,7 @@ router.get(
   // Redirect back to the original page, if any
   (req, res) => {
     const redirect = req.session.oauth2return || '/home';
+    addTemplateVariables(req, res, noop);
     delete req.session.oauth2return;
     res.redirect(redirect);
   }

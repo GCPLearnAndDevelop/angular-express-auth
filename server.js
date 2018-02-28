@@ -1,10 +1,12 @@
 const path = require('path');
 const express = require('express');
 const session = require('express-session');
-// const MemcachedStore = require('connect-memcached')(session);
+const MemcachedStore = require('connect-memjs')(session);
 const passport = require('passport');
 const config = require('./config');
 const ouath2 = require('./oauth2');
+
+const userApi = require('./routes/user');
 
 const app = express();
 
@@ -13,30 +15,33 @@ app.set('trust proxy', true);
 
 app.use(express.static(path.join(__dirname, 'dist')));
 
+let MEMCACHE_URL;
+
+if (process.env.USE_GAE_MEMCACHE) MEMCACHE_URL = `${process.env.GAE_MEMCACHE_HOST}:${process.env.GAE_MEMCACHE_PORT}`;
+else MEMCACHE_URL = config.get('LOCAL_GAE_MEMCACHE');
+
 // [START session]
 // Configure the session and session storage.
-// const sessionConfig = {
-//   resave: false,
-//   saveUninitialized: false,
-//   secret: config.get('SECRET'),
-//   signed: true
-// };
+const sessionConfig = {
+  resave: false,
+  saveUninitialized: false,
+  secret: process.env.SECRET || config.get('SECRET'),
+  signed: true,
+  store: new MemcachedStore({
+    hosts: [MEMCACHE_URL]
+  })
+};
 
-// In production use the App Engine Memcache instance to store session data,
-// otherwise fallback to the default MemoryStore in development.
-// if (config.get('NODE_ENV') === 'production' && config.get('MEMCACHE_URL')) {
-//   sessionConfig.store = new MemcachedStore({
-//     hosts: [config.get('MEMCACHE_URL')]
-//   });
-// }
-
-// app.use(session(sessionConfig));
+app.use(session(sessionConfig));
 // [END session]
 
 // OAuth2
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(ouath2.router);
+
+//API's
+app.use('/api/user', userApi);
 
 // Redirect root to /home
 app.get('/', (req, res) => {
