@@ -7,6 +7,13 @@ import 'rxjs/add/operator/catch';
 @Injectable()
 export class AuthService {
 
-  constructor() { }
+  private api = '/auth/logout';
+
+  constructor(private http: Http) { }
+
+  logout(): Observable<any>{
+    // console.log('logout')
+    return this.http.get( this.api );
+  }
 
 }

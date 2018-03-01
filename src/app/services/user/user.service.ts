@@ -20,7 +20,7 @@ export class UserService {
         }
       )
       .map( res => res.json() )
-      .catch( error => Observable.throw( error.json ) )
+      .catch( error => Observable.throw( error ) )
   }
 
 }

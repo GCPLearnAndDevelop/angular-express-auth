@@ -19,4 +19,8 @@ export class AuthComponent implements OnInit {
     this.document.location = `${protocol}//${hostname}${ ( isDevMode() ? `:${(<any>config).PORT}` : '' )}/auth/login`;
   }
 
+  logout(){
+    this.authService.logout().subscribe();
+  }
+
 }

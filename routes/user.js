@@ -7,10 +7,9 @@ router.route('/')
         async (req, res) => {
 
             try{
-                console.log(req.locals.profile)
-                res.status(200).json(res.locals.profile);
+                res.status(200).json(req.user);
             }catch( error ){
-                rs.status(500).send(error);
+                res.status(500).send(error);
             }
 
         }

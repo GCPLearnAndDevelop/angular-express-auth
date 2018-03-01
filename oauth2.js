@@ -1,8 +1,6 @@
 const express = require('express');
 const config = require('./config');
 
-const noop = () => {}
-
 // [START setup]
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
@@ -61,16 +59,6 @@ function authRequired (req, res, next) {
   next();
 }
 
-// Middleware that exposes the user's profile as well as login/logout URLs to
-// any templates. These are available as `profile`, `login`, and `logout`.
-function addTemplateVariables (req, res, next) {
-  res.locals.profile = req.user;
-  res.locals.login = `/auth/login?return=${encodeURIComponent(req.originalUrl)}`;
-  res.locals.logout = `/auth/logout?return=${encodeURIComponent(req.originalUrl)}`;
-  next();
-}
-// [END middleware]
-
 // Begins the authorization flow. The user will be redirected to Google where
 // they can authorize the application to have access to their basic profile
 // information. Upon approval the user is redirected to `/auth/google/callback`.
@@ -107,7 +95,6 @@ router.get(
   // Redirect back to the original page, if any
   (req, res) => {
     const redirect = req.session.oauth2return || '/home';
-    addTemplateVariables(req, res, noop);
     delete req.session.oauth2return;
     res.redirect(redirect);
   }
@@ -117,6 +104,7 @@ router.get(
 // Deletes the user's credentials and profile from the session.
 // This does not revoke any active tokens.
 router.get('/auth/logout', (req, res) => {
+  console.log('logout ...')
   req.logout();
   res.redirect('/');
 });
@@ -124,6 +112,5 @@ router.get('/auth/logout', (req, res) => {
 module.exports = {
   extractProfile: extractProfile,
   router: router,
-  required: authRequired,
-  template: addTemplateVariables
+  required: authRequired
 };
